@@ -14,18 +14,19 @@ function getSupabase() {
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const supabase = getSupabase()
     const { data, error } = await supabase
       .from('patient_records')
       .select(`
         *,
-        diseases (id, name, description),
-        medicines (id, name, strength, dosage_form)
+        diseases (id, name),
+        medicines (id, name, strength)
       `)
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (error) throw error
@@ -39,15 +40,16 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const supabase = getSupabase()
     const body: Update = await request.json()
     const { data, error } = await supabase
       .from('patient_records')
       .update(body)
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
@@ -61,14 +63,15 @@ export async function PUT(
 
 export async function DELETE(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const supabase = getSupabase()
     const { error } = await supabase
       .from('patient_records')
       .delete()
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (error) throw error
     return NextResponse.json({ success: true })

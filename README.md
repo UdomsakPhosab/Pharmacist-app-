@@ -14,7 +14,7 @@ A comprehensive web application for pharmacists to manage medicines, diseases, p
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | Next.js 14+ with TypeScript |
+| Frontend | Next.js 15+ with TypeScript |
 | Styling | Tailwind CSS |
 | Database | Supabase (PostgreSQL) |
 | Hosting | Vercel |
